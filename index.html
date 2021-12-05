@@ -1,0 +1,93 @@
+<html ng-app="listaTelefonica">
+<head>
+    <title>API Pokemón</title>
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/bootstrap.css">
+    <style>
+        .jumbotron {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: right;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        .form-control {
+            margin-bottom: 5px;
+        }
+        .selecionado {
+            background-color: aquamarine;
+        }
+        .negrito {
+            font-weight: bold;
+        }
+    </style>
+    <script src="lib/angular/angular.js"></script>
+    <script>
+        angular.module("listaPokemon", []);
+        angular.module("listaPokemon").controller("listaPokemonCtrl", function ($scope){
+            $scope.app = "Ola, Michelle";
+            $scope.pokemons = [
+                {nome: "Charmander", habilidade: "Fogo"},
+                {nome: "Squarter", habilidade: "Água"},
+                {nome: "Bulbassauro", habilidade: "Terrestre"}
+            ];
+            $scope.sobres = [
+                {sobre: "aaaaaa"},
+                {sobre: "aaaaaaa"},
+                {sobre: "aaaaaaaa"}
+            ];
+            $scope.adicionarPokemon = function (pokemon) {
+                $scope.pokemons.push(angular.copy(pokemon));
+                delete $scope.pokemon;
+            };
+            $scope.apagarPokemons = function (pokemons) {
+                $scope.pokemons = pokemons.filter(function (pokemon) {
+                    if (!pokemon.selecionado) return pokemon;
+                });
+            };
+            $scope.isPokemonSelecioando = function (pokemons) {
+                return pokemons.some(function (pokemon) {
+                        return pokemon.selecionado;
+                });
+            }
+        });
+    </script>  
+</head>
+<body ng-controller="listaPokemonCtrl">
+    <div class="jumbotron">
+        <h4>{{app}}</h4> 
+    </div>
+    <div>      
+        <h2>Fase de teste prático Front_end</h2>
+        <h4>Pokebusca</h4>
+        <table class="table">
+            <tr>
+                <th></th>
+                <th>Nome</th>
+                <th>Habilidade</th>
+                <th>Descrição</th>
+                <th></th>
+            </tr>
+            <tr ng-class="{'selecionado negrito': pokemon.selecionado}" ng-repeat="pokemon in pokemons">
+                <td><input type="checkbox" ng-model="pokemon.selecionado"/></td>
+                <td>{{pokemon.nome}}</td>
+                <td>{{pokemon.habilidade}}</td>
+                <td>{{pokemon.sobre.sobre}}</td>
+            </tr>
+        </table>
+        <hr/>
+
+        <input class="form-control" type="text" ng-model="pokemon.nome" placeholder="Nome"/>
+        <input class="form-control" type="text" ng-model="pokemon.habilidade" placeholder="Pokemon"/>
+        <select class="form-control" ng-model="contato.sobre" ng-options="sobre.sobre group for sobre in sobres">
+            <option value="">Selecione uma habilidade</option>
+        </select>
+        <button class="btn btn-primary btn-block" ng-click="adicionarPokemon(pokemons)" ng-disabled="!pokemon.nome || !pokemon.habilidade">Adicionar Pokemon</button>
+        <button class="btn btn-danger btn-block" ng-click="apagarPokemons(pokemons)" ng-disabled="isPokemonSelecionado(pokemons)">Apagar Pokemon</button>
+
+    </div>
+    <div ng-include="'footer.html'"></div>
+</body>
+</html>
